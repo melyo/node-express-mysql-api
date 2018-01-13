@@ -50,4 +50,24 @@ module.exports = {
         next(error)
       })
   },
+
+  update(req, res, next) {
+    validateAll(req.body, rules)
+      .then(() => {
+        let user = new User
+        user.update(req.params.id, req.body)
+          .then(data => {
+            if (data.affectedRows) {
+              let body = output.success(null, 'User updated successfully', 200)
+              res.json(body)
+            } else {
+              next({ httpCode: 404, message: 'User Not Found' })
+            }
+          }, error => {
+            next(error)
+          })
+      }, error => {
+        next({ httpCode: 422, message: 'User Not Found', body: error })
+      })
+  },
 }
