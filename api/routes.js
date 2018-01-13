@@ -6,5 +6,6 @@ module.exports = (app) => {
   app.post('/users', user.store)
   app.get('/users/:id', user.item)
   app.patch('/users/:id', user.update)
+  app.delete('/users/:id', user.delete)
 
 }

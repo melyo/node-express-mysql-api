@@ -70,4 +70,19 @@ module.exports = {
         next({ httpCode: 422, message: 'User Not Found', body: error })
       })
   },
+
+  delete(req, res, next) {
+    let user = new User
+    user.delete(req.params.id)
+      .then(data => {
+        if (data.affectedRows) {
+          let body = output.success(null, 'User deleted successfully', 200)
+          res.json(body)
+        } else {
+          next({ httpCode: 404, message: 'User Not Found' })
+        }
+      }, error => {
+        next(error)
+      })
+  },
 }
