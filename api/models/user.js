@@ -3,8 +3,7 @@ var { Model } = require('../../lib/model')
 
 class User extends Model {
   constructor() {
-    super()
-    this.table = 'users'
+    super('users')
   }
 }
 
