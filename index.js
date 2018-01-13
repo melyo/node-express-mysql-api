@@ -26,6 +26,4 @@ exceptions(app)
 
 // get our server running
 var port = process.env.APP_PORT || 3000
-app.listen(port, () => {
-  console.log("App up and running on " + port)
-})
+app.listen(port, () => { console.log(`Up and running on port ${port}`) })
