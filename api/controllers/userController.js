@@ -1,5 +1,12 @@
 var { User } = require('../models/user')
 var output = require('../../lib/output')
+var { validateAll } = require('indicative')
+
+var rules = {
+  name: 'required',
+  age: 'required',
+  email: 'required|email'
+}
 
 module.exports = {
   collection(req, res, next) {
@@ -8,9 +15,24 @@ module.exports = {
       .then(data => {
         let body = output.success(data, 'Success', 200)
         res.json(body)
-      })
-      .catch(error => {
+      }, error => {
         next(error)
+      })
+  },
+
+  store(req, res, next) {
+    validateAll(req.body, rules)
+      .then(() => {
+        let user = new User
+        user.create(req.body)
+          .then(data => {
+            let body = output.success(null, 'User added successfully', 200)
+            res.json(body)
+          }, error => {
+            next(error)
+          })
+      }, error => {
+        next({ httpCode: 422, message: 'User Not Found', body: error })
       })
   },
 
@@ -18,11 +40,14 @@ module.exports = {
     let user = new User
     user.find(req.params.id)
       .then(data => {
-        let body = output.success(data, 'Success', 200)
-        res.json(body)
-      })
-      .catch(error => {
+        if (data.length) {
+          let body = output.success(data, 'Success', 200)
+          res.json(body)
+        } else {
+          next({ httpCode: 404, message: 'User Not Found' })
+        }
+      }, error => {
         next(error)
       })
-  }
+  },
 }
