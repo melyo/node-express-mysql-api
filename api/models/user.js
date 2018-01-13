@@ -3,7 +3,15 @@ var { Model } = require('../../lib/model')
 
 class User extends Model {
   constructor() {
-    super('users')
+    let table = 'users'
+
+    let fillable = [
+      'name',
+      'age',
+      'email'
+    ]
+
+    super(table, fillable)
   }
 }
 
