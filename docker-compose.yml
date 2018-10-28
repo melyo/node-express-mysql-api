@@ -1,0 +1,24 @@
+version: '3'
+services:
+  app:
+    build: .
+    image: melyo/nodedocker:1.0
+    environment:
+      NODE_ENV: development
+    command: sh /home/app/init.sh
+    ports:
+      - '5000:5000'
+    volumes:
+      - .:/home/app
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - mysqldata:/var/lib/mysql
+volumes:
+  mysqldata:
+    driver: "local"
