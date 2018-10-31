@@ -3,8 +3,7 @@ services:
   app:
     build: .
     image: melyo/nodedocker:1.0
-    environment:
-      NODE_ENV: development
+    env_file: ./docker.env
     command: sh /home/app/init.sh
     ports:
       - '5000:5000'
